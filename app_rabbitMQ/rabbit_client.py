@@ -1,9 +1,7 @@
-import json
-import asyncio
 from typing import Type, Any
 from types import TracebackType
 from aio_pika import connect, Message, IncomingMessage
-from aio_pika.abc import AbstractIncomingMessage
+
 from app_rabbitMQ.settings import settings
 
 
@@ -16,9 +14,10 @@ print(settings.rabbit_dsn)
 
 
 
-class RabbitClient:
+class RabbitClient(Worker_handler):
 
     def __init__(self):
+        super().__init__(settings.TELEGRAM_TOKEN)
         self.connect_rabbit: connect = connect(url=settings.rabbit_dsn,)
 
     @staticmethod
@@ -33,14 +32,11 @@ class RabbitClient:
             routing_key=queue_name,
         )
 
-
-
-
-
     @classmethod
-    async def on_message(cls, message: IncomingMessage = None):
+    async def on_message(cls, message: IncomingMessage):
         async with message.process():
-            print(message.body.decode())
+            result = message.body.decode()
+            # await cls.handler(result)
 
 
     @classmethod
