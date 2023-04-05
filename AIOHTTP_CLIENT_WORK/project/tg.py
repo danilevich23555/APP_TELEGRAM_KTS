@@ -1,9 +1,8 @@
 import aiohttp
 from marshmallow.exceptions import ValidationError
 
-from api import TgClient, TgClientError
-from base import Client
-from dcs import GetFileResponse, File, Message, SendMessageResponse
+from AIOHTTP_CLIENT_WORK.project.api import TgClient, TgClientError
+from AIOHTTP_CLIENT_WORK.project.dcs import GetFileResponse, File, Message, SendMessageResponse
 
 
 class TgClientWithFile(TgClient):

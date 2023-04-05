@@ -1,7 +1,7 @@
 from typing import Optional, List
 from marshmallow.exceptions import ValidationError
-from base import ClientError, Client
-from dcs import UpdateObj, Message, SendMessageResponse
+from AIOHTTP_CLIENT_WORK.project.base import ClientError, Client
+from AIOHTTP_CLIENT_WORK.project.dcs import UpdateObj, Message, SendMessageResponse
 
 
 class TgClientError(ClientError):

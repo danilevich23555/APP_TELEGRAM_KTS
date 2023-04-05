@@ -2,11 +2,11 @@ import asyncio
 from decouple import config
 import json
 
-from tg import TgClientWithFile
-from dcs import Message
-from s3 import S3Client
-from sqllite_db import sqllite_DB
-from redis import redis
+from AIOHTTP_CLIENT_WORK.project.tg import TgClientWithFile
+from AIOHTTP_CLIENT_WORK.project.dcs import Message
+from AIOHTTP_CLIENT_WORK.project.s3 import S3Client
+from AIOHTTP_CLIENT_WORK.project.sqllite_db import sqllite_DB
+from AIOHTTP_CLIENT_WORK.project.redis import redis
 
 
 

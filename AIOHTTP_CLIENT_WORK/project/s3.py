@@ -4,7 +4,7 @@ import io
 import aiohttp
 from aiobotocore.session import get_session
 
-from uploader import MultipartUploader
+from AIOHTTP_CLIENT_WORK.project.uploader import MultipartUploader
 
 
 class S3Client:
