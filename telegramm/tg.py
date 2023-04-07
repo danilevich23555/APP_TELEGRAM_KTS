@@ -1,8 +1,8 @@
 import aiohttp
 from marshmallow.exceptions import ValidationError
 
-from AIOHTTP_CLIENT_WORK.project.api import TgClient, TgClientError
-from AIOHTTP_CLIENT_WORK.project.dcs import GetFileResponse, File, Message, SendMessageResponse
+from telegramm.api import TgClient, TgClientError
+from telegramm.dcs import GetFileResponse, File, SendMessageResponse
 
 
 class TgClientWithFile(TgClient):

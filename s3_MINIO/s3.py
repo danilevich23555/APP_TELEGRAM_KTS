@@ -1,10 +1,9 @@
-import asyncio
 import io
 
 import aiohttp
 from aiobotocore.session import get_session
 
-from AIOHTTP_CLIENT_WORK.project.uploader import MultipartUploader
+from s3_MINIO.uploader import MultipartUploader
 
 
 class S3Client:

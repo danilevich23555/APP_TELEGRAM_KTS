@@ -1,33 +1,28 @@
 from typing import Type, Any
 from types import TracebackType
-from aio_pika import connect, Message, IncomingMessage
-import json
+from aio_pika import connect, Message
 
 from app_Worcker.Worcker_handler import Worker_handler
-from app_rabbitMQ.settings import settings
+from settings.settings import settings
 
 
 print(settings.rabbit_dsn)
 
 
 
-
-
-
-
-
-class RabbitClient(Worker_handler):
+class RabbitClient():
 
     def __init__(self):
         super().__init__()
-        self.connect_rabbit: connect = connect(url=settings.rabbit_dsn,)
+        self.connect_rabbit: connect = connect(url=settings.rabbit_dsn)
 
 
-    async def put(self, connection: connect, message_data: Any, queue_name: str):
+    async def put(self, message_data: Any, queue_name: str):
         # Creating a channel
+        connection = await self.connect_rabbit
         channel = await connection.channel()
         # Declaring queue
-        callback_queue=await channel.declare_queue(queue_name)
+        callback_queue = await channel.declare_queue(queue_name)
         # Sending the message
         await channel.default_exchange.publish(
             Message(str(message_data).encode(), reply_to=callback_queue.name),
@@ -42,25 +37,26 @@ class RabbitClient(Worker_handler):
 
 
 
-    async def receive(self, connection: connect, queue_name: str):
+    async def receive(self, queue_name: str):
         # channel = await connection.channel()
         # await channel.set_qos(prefetch_count=1)
         # queue = await channel.declare_queue(queue_name)
         # await queue.consume(cls.on_message, no_ack=False)
+        connection = await self.connect_rabbit
         channel = await connection.channel()
-        await channel.set_qos(prefetch_count=5)
+        await channel.set_qos(prefetch_count=1)
         queue = await channel.declare_queue(queue_name)
         async with queue.iterator() as queue_iter:
             async for message in queue_iter:
                 async with message.process():
                     result = message.body.decode()
                     print(eval(result))
-                    await self.handler(eval(result))
+                    await Worker_handler().handler(eval(result))
 
 
 
-    async def __aenter__(self) -> connect:
-        return await self.connect_rabbit
+    async def __aenter__(self):
+        return self
 
     async def __aexit__(self, exc_type: Type[BaseException] | None, exc: BaseException | None,
                         tb: TracebackType | None):

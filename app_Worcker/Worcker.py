@@ -1,11 +1,6 @@
 import asyncio
-from aio_pika import IncomingMessage
 
 from app_rabbitMQ.rabbit_client import RabbitClient
-
-
-
-
 
 
 class Worker:
@@ -17,25 +12,27 @@ class Worker:
 
     async def _worker(self):
         while self.is_runing:
-            async with RabbitClient() as connection:
-                await RabbitClient().receive(connection, self.queue_name)
+            async with RabbitClient() as rabbit:
+                await rabbit.receive(self.queue_name)
 
 
 
-    def start(self):
+    async def start(self):
         self.is_runing = True
-        self._task = [asyncio.create_task(self._worker())]
+        async with asyncio.Semaphore(5):
+            await asyncio.gather(*[self._worker() for _ in range(5)])
 
 
 
-start_worcker = Worker(queue_name='hello')
-async def start():
-    start_worcker.start()
+
+start_worcker = Worker(queue_name='hello_1')
+async def start_worker():
+    await start_worcker.start()
 
 
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    loop.create_task(start())
+    loop.create_task(start_worker())
     loop.run_forever()
 

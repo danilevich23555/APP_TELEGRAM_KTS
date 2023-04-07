@@ -1,7 +1,7 @@
-from AIOHTTP_CLIENT_WORK.project.tg import TgClientWithFile
-from AIOHTTP_CLIENT_WORK.project.dcs import Message
-from AIOHTTP_CLIENT_WORK.project.s3 import S3Client
-from app_rabbitMQ.settings import settings
+from telegramm.tg import TgClientWithFile
+from telegramm.dcs import Message
+from s3_MINIO.s3 import S3Client
+from settings.settings import settings
 
 
 class Worker_handler:
