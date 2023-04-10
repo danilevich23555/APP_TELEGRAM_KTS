@@ -34,15 +34,13 @@ class Poller:
         self.is_running = True
         self._task = await asyncio.create_task(self._worker())
 
-poller = Poller(settings.TELEGRAM_TOKEN)
 
-async def start():
-    await poller.start()
 
 
 if __name__ == '__main__':
+    poller = Poller(settings.TELEGRAM_TOKEN)
     loop = asyncio.get_event_loop()
-    loop.create_task(start())
+    loop.create_task(poller.start())
     loop.run_forever()
 
 
